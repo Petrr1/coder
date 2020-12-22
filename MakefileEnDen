@@ -1,0 +1,26 @@
+SOURCES=mainEn.c
+FORLIBRARY=SetString.o Coder.o TestString.o
+LIBRARY=libCod.so
+TARGET=encoder
+
+all: $(TARGET)
+
+$(TARGET): mainEn.o libCod.so
+	gcc mainEn.o -o $(TARGET) -std=c99 -L. -lCod -Wl,-rpath,.
+
+mainEn.o: mainEn.c
+	gcc $< -c -o $@ -std=c99
+
+$(LIBRARY): $(FORLIBRARY)
+	gcc SetString.o Coder.o TestString.o -shared -o $(LIBRARY)
+
+SetString.o: SetString.c
+	gcc -c -fPIC $< -std=c99
+
+Coder.o: Coder.c
+	gcc -c -fPIC $< -std=c99
+
+TestString.o: TestString.c
+	gcc -c -fPIC $< -std=c99
+clean:
+	rm -f *.o *.so $(TARGET)
