@@ -1,0 +1,26 @@
+SOURCES=mainEn.c
+FORLIBRARY=SetString.o Coder.o TestString.o
+LIBRARY=libString.a
+TARGET=encoder
+
+all: $(TARGET)
+
+$(TARGET): mainEn.o libString.a
+	gcc mainEn.o -o $(TARGET) -std=c99 -L. -lString
+
+mainEn.o: mainEn.c
+	gcc $< -c -o $@ -std=c99
+
+$(LIBRARY): $(FORLIBRARY)
+	ar cr $(LIBRARY) SetString.o Coder.o TestString.o
+
+SetString.o: SetString.c
+	gcc $< -c -o $@ -std=c99
+
+Coder.o: Coder.c
+	gcc $< -c -o $@ -std=c99
+
+TestString.o: TestString.c
+	gcc $< -c -o $@ -std=c99
+clean:
+	rm -f *.o *.a $(TARGET)
